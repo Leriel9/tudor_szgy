@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="tudor (5)" project="tudor" tests="3" started="3" failures="0" errors="0" ignored="0">
+  <testsuite name="hu.elte.szgy.tudor.TudorApplicationTests" time="0.407">
+    <testcase name="testGetKerdesById" classname="hu.elte.szgy.tudor.TudorApplicationTests" time="0.316"/>
+    <testcase name="testGetValaszById" classname="hu.elte.szgy.tudor.TudorApplicationTests" time="0.023"/>
+    <testcase name="testListValaszok" classname="hu.elte.szgy.tudor.TudorApplicationTests" time="0.068"/>
+  </testsuite>
+</testrun>

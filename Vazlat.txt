@@ -1,0 +1,105 @@
+A TUDOR alkalmazás vázlata
+==========================
+==========================
+
+ADATBÁZIS MODELL
+================
+
+- UserAccount: UserID, username, jelszo, tipus, enabled
+
+- Ugyfel: UgyfelID, Nev, Telefonszam, Email, Erdekelt_kategoriak, FK_UserID
+- Tudor: TudorID, Nev, Email, FK_UserID
+- Admin: AdminID, Nev, Email, FK_UserID
+
+- Szakterulet: SzakteruletID, FK_TudorID, FK_KategoriaID
+- ErdekeltKategoria: ErdekeltKategoriaID, FK_UgyfelID, FK_KategoriaID
+
+- Kerdes: KerdesID, Datum, Szoveg, Statusz(nyitott, lezárt, törölt), Masolat(igen/nem), FK_UgyfelID, FK_KategoriaID
+- Kategoria: KategoriaID, Nev, Leiras
+- Valasz: ValaszID, Datum, Szoveg, Ertekeles, FK_KerdesID, FK_TudorID
+
+ALKALMAZÁS BEANEK
+=================
+
+- UserManager
+	addUser(User)
+	setPassword(pwd)
+	removeUser(UserID)
+	checkLogin(userstr, pwd)       TYPE
+	setLoginParameters(userstr, pwd, isenabled)
+	
+- KerdesNavigator
+	getKerdesData(KerdesID) { Datum, Szoveg, Statusz, Masolat, KategoriaID, KategoriaNev }
+	getKategoriaData(KategoriaID) { Nev, Leiras }
+	
+	findAllKerdes()			V_KerdesID
+	findAllKategoria()		V_KategoriaID
+	
+	searchKerdesek(szoveg, UgyfelID, KategoriaIDs, TudorIDs, beginDate, endDate)
+	
+- ValaszNavigator
+	getValaszData(ValaszID) { Datum, Szoveg, KerdesID, TudorID, TudorNev, TudorEmail}	
+	findAllValasz()			V_ValaszID
+	
+- KerdesManager
+	addKerdes(Szoveg, KategoriaID)
+	addKategoria(Nev, Leiras)
+	addTudorSzakterulet(SzakteruletID, TudorID, KategoriaID)
+	addErdekeltKategoria(UgyfelID, KategoriaID)
+	removeKerdes(KerdesID)
+	setMasolat(KerdesID)
+	setKerdesStatusz(KerdesID, Statusz)
+	setKerdesKategoria(KerdesID, KategoriaIDs)
+	
+- ValaszManager
+	findValasz(ValaszID)
+	addValasz(KerdesID)
+	removeValasz(ValaszID, KerdesID)
+	setErtekeles(ValaszID, ertekeles)
+	
+
+DATA TRANSFER OBJECTEK
+======================
+
+G user/self				 		mindenki magára
+G user/<id>				 		A
+P user/new				 		A ( A T U-ra)
+P user/password					mindenki magára
+P user/password/<uid>    		A ( A T U-ra)
+P user/delete/<uid>		 		A ( A T U-ra)
+P login							mindenki
+
+G kerdes/<kid>					A
+G kerdes/szakterulet/<szakid>	T
+G kerdes/bongeszes				U
+P kerdes/new					U
+P kerdes/delete/<kid>			A U (saját kérdésre)
+P kerdes/masolat/<kid>			A
+
+G valasz/<vid>					A
+G valasz/tudor/<tid>			T
+P valasz/new					T
+P valasz/ertekeles/<vid>		U (saját kérdés-válaszra)
+P valasz/delete/<vid>			A T (saját válaszra)
+
+
+Ügyfél: Bejelentkezés kezelése
+		Saját adatok módosítása
+		Új kérdés felvitele
+		Kérdések közötti böngészés
+		Válaszok értékelése
+		Saját kérdés törlése
+		
+Tudor:	Bejelentkezés kezelése
+		Saját adatok módosítása
+		Saját szakterület kérdéseinek megtekintése
+		Saját válaszok megtekintése
+		Új válasz felvitele
+		Saját válasz törlése
+
+Admin:	Bejelentkezés kezelése
+		Saját adatok módosítása
+		Kérdések és válaszok törlése
+		Felhasználó adatainak módosítása
+		Felhasználó törlése
+		Kérdések megjelölése másolatként
